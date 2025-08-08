@@ -1,12 +1,14 @@
-import express, { Express, Request, Response } from "express";
+import express from "express";
+import { userRouter } from "./domains/users/users.route";
 
-const app: Express = express();
-const port = 4000;
+const PORT = 4000;
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Express + TypeScript Server");
-});
+const app = express();
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+app.use(express.json());
+
+app.use("/api/v1/users", userRouter);
+
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
