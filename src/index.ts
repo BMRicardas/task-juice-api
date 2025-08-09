@@ -1,17 +1,19 @@
 import express from "express";
 import rateLimit from "express-rate-limit";
 
+import { env } from "./core";
+
 import { userRouter } from "./domains/users/users.route";
 import { taskRouter } from "./domains/tasks/tasks.route";
 import { challengeRouter } from "./domains/challenge/challenge.route";
 
-const PORT = process.env.PORT;
+const PORT = env.PORT;
 
 const app = express();
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
+  max: 100,
   message: "Too many requests from this IP, please try again later.",
 });
 app.use("/api", limiter);
