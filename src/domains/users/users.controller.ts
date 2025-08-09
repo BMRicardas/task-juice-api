@@ -2,12 +2,12 @@ import { Request, Response } from "express";
 import { userService } from "./users.service";
 
 class Controller {
-  async register(req: Request, res: Response, next: Function) {
+  async register(req: Request, res: Response) {
     const { email, password } = req.body;
-    console.log(req.body);
+
     try {
       const user = await userService.register({ data: { email, password } });
-      console.log("HERE");
+
       res.status(201).json({
         status: "success",
         data: { user },
@@ -24,8 +24,6 @@ class Controller {
           message: "An unexpected error occurred",
         });
       }
-    } finally {
-      next();
     }
   }
 

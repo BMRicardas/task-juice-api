@@ -26,7 +26,7 @@ export class Service {
     }
 
     const hashedPassword = await bcryptService.hash(password);
-    console.log({ hashedPassword });
+
     const user = await prisma.user.create({
       data: {
         email,
