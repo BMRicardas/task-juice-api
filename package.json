@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "ts-node src/index.ts",
     "build": "tsc",
+    "prisma:format": "npx prisma format",
     "db": "prisma db push",
     "migrate": "prisma migrate dev",
     "generate": "prisma generate",
