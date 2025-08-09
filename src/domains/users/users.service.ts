@@ -1,5 +1,5 @@
 import { prisma } from "../../core/db";
-import { bcryptService } from "../../shared/infrastructure/hashing/bcrypt.service";
+import { bcryptService } from "../../tools";
 
 type Register = {
   data: { email: string; password: string };
