@@ -60,7 +60,14 @@ export class Service {
       throw new Error("Invalid password");
     }
 
-    return user;
+    const baseUser = {
+      id: user.id,
+      email: user.email,
+      username: user.username,
+      collectedPoints: user.collectedPoints,
+    };
+
+    return baseUser;
   }
 
   async getUsers() {
