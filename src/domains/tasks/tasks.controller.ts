@@ -1,16 +1,22 @@
 import { Request, Response } from "express";
-import { userService } from "./users.service";
+import { taskService } from "./tasks.service";
 
 class Controller {
-  async register(req: Request, res: Response) {
-    const { email, password } = req.body;
+  async create(req: Request, res: Response) {
+    const { title, description } = req.body;
+
+    // @ts-expect-error
+    const { id } = req.user;
 
     try {
-      const user = await userService.register({ data: { email, password } });
+      const task = await taskService.create({
+        // @ts-expect-error
+        data: { title, description, id },
+      });
 
       res.status(201).json({
         status: "success",
-        data: { user },
+        data: { task },
       });
     } catch (error) {
       if (error instanceof Error) {
@@ -27,15 +33,18 @@ class Controller {
     }
   }
 
-  async login(req: Request, res: Response) {
-    const { email, password } = req.body;
+  async update(req: Request, res: Response) {
+    const { id } = req.params;
+    const { title, description } = req.body;
 
     try {
-      const user = await userService.login({ data: { email, password } });
+      const task = await taskService.update({
+        data: { id, title, description },
+      });
 
       res.status(200).json({
         status: "success",
-        data: { user },
+        data: { task },
       });
     } catch (error) {
       if (error instanceof Error) {
@@ -52,37 +61,65 @@ class Controller {
     }
   }
 
-  async getUsers(_req: Request, res: Response) {
-    try {
-      const users = await userService.getUsers();
-
-      res.status(200).json({
-        status: "success",
-        results: users.length,
-        data: { users },
-      });
-    } catch (error) {
-      if (error instanceof Error) {
-        res.status(400).json({
-          status: "error",
-          message: error.message,
-        });
-      } else {
-        res.status(500).json({
-          status: "error",
-          message: "An unexpected error occurred",
-        });
-      }
-    }
-  }
-
-  async getUserById(req: Request, res: Response) {
+  async delete(req: Request, res: Response) {
     const { id } = req.params;
 
     try {
-      const user = await userService.getUserById({ data: { id } });
+      const task = await taskService.delete({ data: { id } });
 
-      res.status(200).json(user);
+      res.status(200).json({
+        status: "success",
+        data: { task },
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(400).json({
+          status: "error",
+          message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          status: "error",
+          message: "An unexpected error occurred",
+        });
+      }
+    }
+  }
+
+  async getTasks(req: Request, res: Response) {
+    try {
+      const tasks = await taskService.getTasks();
+
+      res.status(200).json({
+        status: "success",
+        results: tasks.length,
+        data: { tasks },
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(400).json({
+          status: "error",
+          message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          status: "error",
+          message: "An unexpected error occurred",
+        });
+      }
+    }
+  }
+
+  async getTaskById(req: Request, res: Response) {
+    const { id } = req.params;
+
+    try {
+      const task = await taskService.getTaskById({ data: { id } });
+
+      res.status(200).json({
+        status: "success",
+        data: { task },
+      });
     } catch (error) {
       if (error instanceof Error) {
         res.status(400).json({
@@ -99,4 +136,4 @@ class Controller {
   }
 }
 
-export const userController = new Controller();
+export const taskController = new Controller();
