@@ -1,7 +1,9 @@
 import express from "express";
+import rateLimit from "express-rate-limit";
+
 import { userRouter } from "./domains/users/users.route";
 import { taskRouter } from "./domains/tasks/tasks.route";
-import rateLimit from "express-rate-limit";
+import { challengeRouter } from "./domains/challenge/challenge.route";
 
 const PORT = process.env.PORT;
 
@@ -18,6 +20,7 @@ app.use(express.json());
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/tasks", taskRouter);
+app.use("/api/v1/challenges", challengeRouter);
 
 process.on("uncaughtException", (error) => {
   console.error("Uncaught Exception:", error.message);
