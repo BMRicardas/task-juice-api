@@ -1,5 +1,5 @@
 import { prisma } from "../../core/db";
-import { bcryptService } from "../../tools";
+import { bcryptService, jwtService } from "../../tools";
 
 type Register = {
   data: { email: string; password: string };
@@ -32,14 +32,18 @@ export class Service {
         email,
         password: hashedPassword,
       },
-      omit: {
-        password: true,
-        createdAt: true,
-        updatedAt: true,
+      select: {
+        id: true,
+        email: true,
       },
     });
 
-    return user;
+    const token = jwtService.generateToken(user);
+
+    return {
+      data: user,
+      token,
+    };
   }
 
   async login({ data: { email, password } }: Login) {

@@ -1,13 +1,13 @@
-import bcrypt from "bcryptjs";
-import { env } from "../../../core";
+import { hash, compare } from "bcryptjs";
+import { env } from "../../core";
 
 class BcryptService {
   async hash(plainText: string) {
-    return await bcrypt.hash(plainText, Number(env.SALT_ROUNDS));
+    return await hash(plainText, Number(env.SALT_ROUNDS));
   }
 
   async compare(plainText: string, hash: string) {
-    return await bcrypt.compare(plainText, hash);
+    return await compare(plainText, hash);
   }
 }
 
